@@ -1,5 +1,5 @@
 /**
- * pro.enchant.js v0.5.0
+ * pro.enchant.js v0.6.0
  *
  * Copyright (c) Ubiquitous Entertainment Inc.
  * Dual licensed under the MIT or GPL Version 3 licenses
@@ -252,7 +252,7 @@ if(supportsEnchantPRO()) (function() {
      * Sprite3Dの頂点情報
      * @type {Array.<Number>}
      */
-    'vertices indices normals'.split(' ').forEach(function(prop) {
+    'vertices indices normals texCoords'.split(' ').forEach(function(prop) {
         Object.defineProperty(enchant.pro.Sprite3D.prototype, prop, {
             get: function() {
                 return this['_' + prop];
@@ -284,6 +284,7 @@ if(supportsEnchantPRO()) (function() {
 
             this._manager = EP_GL.getMeshManager();
             this.childNodes = [];
+            this.lights = [];
             var that = this;
             enchant.Game.instance.addEventListener('enterframe', function(e) {
                 var nodes = that.childNodes.slice();
@@ -295,6 +296,37 @@ if(supportsEnchantPRO()) (function() {
                         push.apply(nodes, node.childNodes);
                     }
                 }
+            	if(that._camera){
+            		if(that._camera._changedPosition){
+            			EP_GL.getCamera().setPositionJSON(
+            				"[" + that._camera.x + "," + that._camera.y + "," + that._camera.z + "]");
+            			that._camera._changedPosition = false;
+            		}
+            		if(that._camera._changedCenter){
+	            		EP_GL.getCamera().setCenterJSON(
+	            			"[" + that._camera.centerX + "," + that._camera.centerY + "," + that._camera.centerZ + "]");
+   						that._camera._changedCenter = false;
+            		}
+            		if(that._camera._changedUpVector){
+	            		EP_GL.getCamera().setUpVectorJSON(
+	            			"[" + that._camera.upVectorX + "," + that._camera.upVectorY + "," + that._camera.upVectorZ + "]");
+	            		that._camera._changedUpVector = false;
+            		}
+            	}
+            	nodes = that.lights.slice();
+            	while(nodes.length) {
+            		var node = nodes.pop();
+            		if(node._changedPosition){
+            			EP_GL.getLight(node._id).setPositionJSON(
+            				"[" + node.x + "," + node.y + "," + node.z + "]");
+            			node._changedPosition = false;
+            		}
+            		if(node._changedDirection){
+            			EP_GL.getLight(node._id).setSpotDirectionJSON(
+            				"[" + node.directionX + "," + node.directionY + "," + node.directionZ + "]");
+            			node._changedDirection = false;
+            		}
+            	}
             });
         },
         /**
@@ -302,6 +334,7 @@ if(supportsEnchantPRO()) (function() {
          * @param {enchant.Sprite3D}
          */
         addChild: function(sprite) {
+        	this.childNodes.push(sprite);
             this._manager.add(sprite._mesh);
             sprite.parentNode = sprite.scene = this;
             sprite.dispatchEvent(new enchant.Event('added'));
@@ -320,6 +353,34 @@ if(supportsEnchantPRO()) (function() {
             sprite.parentNode = sprite.scene = null;
             sprite.dispatchEvent(new enchant.Event('removed'));
             sprite.dispatchEvent(new enchant.Event('removedfromscene'));
+        },
+        /**
+         * Scene3Dのカメラ位置をセットする
+         * @param {enchant.Camera3D}
+         */
+        setCamera: function(camera) {
+        	this._camera = camera;
+        },
+        
+        /**
+         * Light3Dを追加する
+         * @param {enchant.Light3D}
+         */
+        addLight: function(light){
+        	this.lights.push(light);
+        	EP_GL.getLight(light._id).enable();
+        },
+        
+        /**
+         * Light3Dを削除する
+         * @param {enchant.Light3D}
+         */
+        removeLight: function(light){
+            var i;
+            if ((i = this.lights.indexOf(light)) != -1) {
+                this.lights.splice(i, 1);
+            }
+            EP_GL.getLight(light._id).disable();
         }
     });
 
@@ -369,6 +430,114 @@ if(supportsEnchantPRO()) (function() {
         });
     });
     
+    enchant.pro.Camera3D = enchant.Class.create({
+    	initialize: function(){
+    		this._changedPosition = false;
+    		this._changedCenter = false;
+    		this._changedUpVector = false;
+    	}
+    });
+    
+    /**
+     * Camera3Dの各軸に対する平行移動量
+     * @type {Number}
+     */
+    'x y z'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Camera3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(n) {
+                this['_' + prop] = n;
+                this._changedPosition = true;
+            }
+        });
+        enchant.pro.Camera3D.prototype[prop] = 0;
+    });
+    
+    /**
+     * Camera3Dの各軸に対する平行移動量
+     * @type {Number}
+     */
+    'centerX centerY centerZ'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Camera3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(n) {
+                this['_' + prop] = n;
+                this._changedCenter = true;
+            }
+        });
+        enchant.pro.Camera3D.prototype[prop] = 0;
+    });
+    
+    /**
+     * Camera3Dの各軸に対する平行移動量
+     * @type {Number}
+     */
+    'upVectorX upVectorY upVectorZ'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Camera3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(n) {
+                this['_' + prop] = n;
+                this._changedUpVector = true;
+            }
+        });
+        enchant.pro.Camera3D.prototype[prop] = prop == 'upVectorY' ? 1 : 0;
+    });
+    
+    enchant.pro.Light3D = enchant.Class.create(enchant.EventTarget, {
+    	initialize: function(id){
+    		if(id >= EP_GL.getLightCount()) throw new Error('id must be less than ' + EP_GL.getLightCount());
+    		this._id = id;
+    	}
+    });
+    
+    /**
+     * Light3DのIDの最大インデックスを返す
+     * @type {Number}
+     */
+    enchant.pro.Light3D.maxLightID = function(){
+    	return EP_GL.getLightCount();
+    };
+    
+    /**
+     * Light3Dの各軸に対する平行移動量
+     * @type {Number}
+     */
+    'x y z'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Light3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(n) {
+                this['_' + prop] = n;
+                this._changedPosition = true;
+            }
+        });
+        enchant.pro.Light3D.prototype[prop] = 0;
+    });
+    
+    /**
+     * Light3Dの照射方向
+     * @type {Number}
+     */
+    'directionX directionY directionZ'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Light3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(n) {
+                this['_' + prop] = n;
+                this._changedDirection = true;
+            }
+        });
+        enchant.pro.Light3D.prototype[prop] = 0;
+    });
+                    
     /**
      * @scope enchant.pro.Sensor.prototype
      */
