@@ -58,13 +58,19 @@
 				
 					<li><a href="../symbols/enchant.pro.Camera.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Camera</a></li>
 				
+					<li><a href="../symbols/enchant.pro.Camera3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Camera3D</a></li>
+				
 					<li><a href="../symbols/enchant.pro.Gravity.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Gravity</a></li>
 				
 					<li><a href="../symbols/enchant.pro.Gyroscope.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Gyroscope</a></li>
 				
+					<li><a href="../symbols/enchant.pro.Light3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Light3D</a></li>
+				
 					<li><a href="../symbols/enchant.pro.MagneticField.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>MagneticField</a></li>
 				
 					<li><a href="../symbols/enchant.pro.Orientation.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Orientation</a></li>
+				
+					<li><a href="../symbols/enchant.pro.Scene3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Scene3D</a></li>
 				
 					<li><a href="../symbols/enchant.pro.Sensor.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Sensor</a></li>
 				
@@ -89,7 +95,7 @@
 			Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 			Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
 			Generated on:
-			<time datetime='2011-9-20' pubdate>2011-9-20 16:59</time>
+			<time datetime='2011-10-4' pubdate>2011-10-4 18:00</time>
 		</footer>
 	</div>
 </div>
@@ -115,7 +121,7 @@
 							
 							
 							
-								<li>Defined in: <a href="../symbols/src/lib_pro.enchant.js.html">pro.enchant.js</a></li>
+								<li>Defined in: <a href="../symbols/src/pro.enchant.js.html">pro.enchant.js</a></li>
 							
 							
 						</ul>
@@ -172,6 +178,56 @@
 												<td class="attributes">&nbsp;</td>
 												<td class="nameDescription">
 													<div class="fixedFont">
+													<b><a href="../symbols/enchant.pro.Surface3D.html#ambient">ambient</a></b>
+													</div>
+													<div class="description">環境光のパラメータ</div>
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont">
+													<b><a href="../symbols/enchant.pro.Surface3D.html#diffuse">diffuse</a></b>
+													</div>
+													<div class="description">拡散光のパラメータ</div>
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont">
+													<b><a href="../symbols/enchant.pro.Surface3D.html#emission">emission</a></b>
+													</div>
+													<div class="description">光の発光量</div>
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont">
+													<b><a href="../symbols/enchant.pro.Surface3D.html#shininess">shininess</a></b>
+													</div>
+													<div class="description">鏡面計数</div>
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont">
+													<b><a href="../symbols/enchant.pro.Surface3D.html#specular">specular</a></b>
+													</div>
+													<div class="description">光の反射量</div>
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="attributes">&nbsp;</td>
+												<td class="nameDescription">
+													<div class="fixedFont">
 													<b><a href="../symbols/enchant.pro.Surface3D.html#src">src</a></b>
 													</div>
 													<div class="description">テクスチャ画像のURL</div>
@@ -215,13 +271,16 @@
 								ポリゴンのテクスチャ情報を格納するクラス.
 								
 							</div>
-							
-							
-								
-									<pre class="code">  var sprite = new Sprite3D();  var surface = new Surface3D();  surface.src = "http://example.com/surface.png";  sprite.surface = surface;</pre>
-								
-							
 						
+							
+							
+							
+								<dl class="detailList">
+								<dt class="heading">Examples:</dt>
+								
+									<dd><pre class="code">  var sprite = new Sprite3D();  var surface = new Surface3D();  surface.src = "http://example.com/surface.png";  sprite.surface = surface;</pre></dd>
+								
+								</dl>
 							
 							
 							
@@ -241,12 +300,122 @@
 							</h2>
 							
 							
+								<div class="fixedFont heading" id="ambient">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Number[]}</span>
+									
+									<b>ambient</b>							
+								</div>
+								
+								<div class="description">
+									環境光のパラメータ
+									
+									
+									
+								</div>
+								
+								
+									
+								
+								<div class="hr"></div>
+							
+								<div class="fixedFont heading" id="diffuse">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Number[]}</span>
+									
+									<b>diffuse</b>							
+								</div>
+								
+								<div class="description">
+									拡散光のパラメータ
+									
+									
+									
+								</div>
+								
+								
+									
+								
+								<div class="hr"></div>
+							
+								<div class="fixedFont heading" id="emission">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Number[]}</span>
+									
+									<b>emission</b>							
+								</div>
+								
+								<div class="description">
+									光の発光量
+									
+									
+									
+								</div>
+								
+								
+									
+								
+								<div class="hr"></div>
+							
+								<div class="fixedFont heading" id="shininess">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Number[]}</span>
+									
+									<b>shininess</b>							
+								</div>
+								
+								<div class="description">
+									鏡面計数
+									
+									
+									
+								</div>
+								
+								
+									
+								
+								<div class="hr"></div>
+							
+								<div class="fixedFont heading" id="specular">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Number[]}</span>
+									
+									<b>specular</b>							
+								</div>
+								
+								<div class="description">
+									光の反射量
+									
+									
+									
+								</div>
+								
+								
+									
+								
+								<div class="hr"></div>
+							
 								<div class="fixedFont heading" id="src">
 									<span class='lighter'>
 									
 									</span>
 									
-									
+									<span class="light">{String}</span>
 									
 									<b>src</b>							
 								</div>
