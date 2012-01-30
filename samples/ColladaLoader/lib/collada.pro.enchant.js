@@ -45,17 +45,30 @@ if (enchant.pro != undefined) {
                         ep_mesh.surface = surface;
                         
                         ep_mesh.vertices = mesh.vertices;
-                        ep_mesh.normals = mesh.normals;
-                        ep_mesh.texCoords = mesh.uv;
+                        if(mesh.normals && mesh.normals.length > 0){
+                        	ep_mesh.normals = mesh.normals;
+                        }else{
+                        	ep_mesh.normals = mesh.vertices;
+                        }
+                        //ep_mesh.normals = mesh.normals;
+                        if(mesh.uv && mesh.uv.length > 0){
+	                        ep_mesh.texCoords = mesh.uv;
+                        }
                         ep_mesh.indices = mesh.indices;
-                        ep_mesh.x = geometry.translation[0];
-                        ep_mesh.y = geometry.translation[1];
-                        ep_mesh.z = geometry.translation[2];
-                        ep_mesh.rotation = geometry.rotation;
-                        ep_mesh.scaleX = geometry.scale[0];
-                        ep_mesh.scaleY = geometry.scale[1];
-                        ep_mesh.scaleZ = geometry.scale[2];
-                        ep_mesh.name = geometry.id;
+                        if(geometry){
+                        	if(geometry.translation){
+		                        ep_mesh.x = geometry.translation[0];
+		                        ep_mesh.y = geometry.translation[1];
+		                        ep_mesh.z = geometry.translation[2];
+                        	}
+	                        ep_mesh.rotation = geometry.rotation;
+	                        if(geometry.scale){
+		                        ep_mesh.scaleX = geometry.scale[0];
+		                        ep_mesh.scaleY = geometry.scale[1];
+		                        ep_mesh.scaleZ = geometry.scale[2];
+	                        }
+	                        ep_mesh.name = geometry.id;
+                        }
                         root.addChild(ep_mesh);
                     }
                 }

@@ -68,6 +68,8 @@
 				
 					<li><a href="../symbols/enchant.pro.MagneticField.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>MagneticField</a></li>
 				
+					<li><a href="../symbols/enchant.pro.NFCReader.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>NFCReader</a></li>
+				
 					<li><a href="../symbols/enchant.pro.Orientation.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Orientation</a></li>
 				
 					<li><a href="../symbols/enchant.pro.Scene3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Scene3D</a></li>
@@ -95,7 +97,7 @@
 			Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 			Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
 			Generated on:
-			<time datetime='2011-11-1' pubdate>2011-11-1 23:05</time>
+			<time datetime='2012-0-30' pubdate>2012-0-30 17:07</time>
 		</footer>
 	</div>
 </div>
@@ -149,7 +151,7 @@
 										<div class="fixedFont">
 											<b><a href="../symbols/enchant.Scene.html#constructor">enchant.Scene</a></b>()
 										</div>
-										<div class="description">表示オブジェクトツリーのルートになるクラス.</div>
+										<div class="description">Class that becomes route for display object tree.</div>
 									</td>
 								</tr>
 							</tbody>
@@ -182,7 +184,7 @@
 													<div class="fixedFont">
 													<b><a href="../symbols/enchant.Scene.html#backgroundColor">backgroundColor</a></b>
 													</div>
-													<div class="description">Sceneの背景色.</div>
+													<div class="description">Scene background color.</div>
 												</td>
 											</tr>
 										
@@ -216,7 +218,7 @@
 						
 							<nav>
 								<dl class="inheritsList" id="MethodsListInherited">
-								<dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/enchant.Group.html">enchant.Group</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/enchant.Group.html#addChild">addChild</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.Group.html#insertBefore">insertBefore</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.Group.html#removeChild">removeChild</a></span></dd><dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/enchant.Node.html">enchant.Node</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/enchant.Node.html#moveBy">moveBy</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.Node.html#moveTo">moveTo</a></span></dd><dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/enchant.EventTarget.html">enchant.EventTarget</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/enchant.EventTarget.html#addEventListener">addEventListener</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.EventTarget.html#dispatchEvent">dispatchEvent</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.EventTarget.html#removeEventListener">removeEventListener</a></span></dd>
+								<dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/enchant.Group.html">enchant.Group</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/enchant.Group.html#addChild">addChild</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.Group.html#insertBefore">insertBefore</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.Group.html#removeChild">removeChild</a></span></dd><dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/enchant.Node.html">enchant.Node</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/enchant.Node.html#moveBy">moveBy</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.Node.html#moveTo">moveTo</a></span></dd><dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/enchant.EventTarget.html">enchant.EventTarget</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/enchant.EventTarget.html#addEventListener">addEventListener</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.EventTarget.html#clearEventListener">clearEventListener</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.EventTarget.html#dispatchEvent">dispatchEvent</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/enchant.EventTarget.html#removeEventListener">removeEventListener</a></span></dd>
 								</dl>
 							</nav>
 						
@@ -244,7 +246,7 @@
 							</div>
 							
 							<div class="description">
-								表示オブジェクトツリーのルートになるクラス.
+								Class that becomes route for display object tree.
 								
 							</div>
 						
@@ -254,7 +256,10 @@
 								<dl class="detailList">
 								<dt class="heading">Examples:</dt>
 								
-									<dd><pre class="code">  var scene = new Scene();  scene.addChild(player);  scene.addChild(enemy);  game.pushScene(scene);</pre></dd>
+									<dd><pre class="code">  var scene = new Scene();
+  scene.addChild(player);
+  scene.addChild(enemy);
+  game.pushScene(scene);</pre></dd>
 								
 								</dl>
 							
@@ -287,7 +292,8 @@
 								</div>
 								
 								<div class="description">
-									Sceneの背景色.CSSの'color'プロパティと同様の形式で指定できる.
+									Scene background color.
+Can indicate same format as CSS 'color' property.
 									
 									
 									

@@ -23,13 +23,13 @@ window.onload = function(){
         light.directionX = 0;
         light.directionY = 0;
         light.directionZ = -1;
-        scene.addLight(light);
+//        scene.addLight(light);
         var timecount = 0;
-        //このモデルはnote.xさんの
-        //http://blog.r3c7.net/?p=121
-        //より取得した物を利用しています
         Sprite3D.loadCollada("./model/negimiku.dae", function(model){
             if (model) {
+//            	model.scaleX = 0.05;
+//            	model.scaleY = 0.05;
+//            	model.scaleZ = 0.05;
             	model.addEventListener("enterframe", function(){
             		timecount += 0.016;
             		camera.x = Math.cos(timecount) * 50;

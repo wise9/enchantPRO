@@ -1,5 +1,5 @@
 /**
- * pro.enchant.js v1.0.0
+ * pro.enchant.js v1.0.1
  *
  * Copyright (c) Ubiquitous Entertainment Inc.
  * Dual licensed under the MIT or GPL Version 3 licenses
@@ -317,19 +317,19 @@ if(supportsEnchantPRO()) (function() {
      */
     enchant.pro.Sprite3D = enchant.Class.create(enchant.EventTarget, {
 	    /**
-	     * 3Dポリゴン表示機能を持ったクラス.
+	     * 3Dオブジェクト表示機能を持ったクラス.
 	     * <p>デフォルトではenchantPROのロゴのテクスチャが貼られた立方体がロードされる.</p>
 	     * <p>{@link enchant.pro.Scene3D}のインスタンスに追加することで, 画面上に表示することができる.
 	     * {@link enchant.pro.Sprite3D#vertices}, {@link enchant.pro.Sprite3D#indices},
-	     * {@link enchant.pro.Sprite3D#normals}などを変更することで、任意のポリゴンを描画することもでき,
+	     * {@link enchant.pro.Sprite3D#normals}などを変更することで、任意の3Dオブジェクトを描画することもでき,
 	     * テクスチャなども貼付けることができる.</p>
-	     * <p>また、ポリゴンを子として追加することも可能で、子は全て親を基準とした座標系で描画される.</p>
+	     * <p>また、別3Dオブジェクトを子として追加することも可能で、子は全て親を基準とした座標系で描画される.</p>
 	     * @example
 	     *   //シーンの初期化
 	     *   var scene = new Scene3D();
-	     *   //ポリゴンの初期化
+	     *   //3Dオブジェクトの初期化
 	     *   var sprite = new Sprite3D();
-	     *   //ポリゴンをシーンに追加
+	     *   //3Dオブジェクトをシーンに追加
 	     *   scene.addChild(sprite);
 	     *
 	     * @constructs
@@ -391,8 +391,8 @@ if(supportsEnchantPRO()) (function() {
             	6, 7, 3
             ];
             /**
-             * 子ポリゴン要素の配列.
-             * この要素に子として追加されているポリゴンの一覧を取得できる.
+             * 子3Dオブジェクト要素の配列.
+             * この要素に子として追加されている3Dオブジェクトの一覧を取得できる.
              * 子を追加したり削除したりする場合には、この配列を直接操作せずに,
              * {@link enchant.pro.Sprite3D#addChild}や{@link enchant.pro.Sprite3D#removeChild}を利用する.
              * @type enchant.pro.Sprite3D[]
@@ -401,7 +401,7 @@ if(supportsEnchantPRO()) (function() {
              */
             this.childNodes = [];
             /**
-             * このポリゴンが現在追加されているシーンオブジェクト.
+             * この3Dオブジェクトが現在追加されているシーンオブジェクト.
              * どのシーンにも追加されていないときにはnull.
              * @type enchant.pro.Scene3D
              * @see enchant.pro.Scene3D#addChild
@@ -409,7 +409,7 @@ if(supportsEnchantPRO()) (function() {
             this.scene = null;
 
             /**
-             * ポリゴンの親要素.
+             * 3Dオブジェクトの親要素.
              * 親が存在しない場合にはnull.
              * @type enchant.pro.Sprite3D|enchant.pro.Scene3D
              */
@@ -465,15 +465,15 @@ if(supportsEnchantPRO()) (function() {
             });
         },
 	    /**
-	     * 子ポリゴンを追加する.
-	     * 追加が完了すると、子ポリゴンに対してaddedイベントが発生する.
+	     * 子3Dオブジェクトを追加する.
+	     * 追加が完了すると、子3Dオブジェクトに対してaddedイベントが発生する.
 	     * 親が既にシーンに追加されていた場合には、そのシーンに追加され,
 	     * addedtosceneイベントが発生する.
-	     * @param {enchant.pro.Sprite3D} sprite 追加する子ポリゴン.
+	     * @param {enchant.pro.Sprite3D} sprite 追加する子3Dオブジェクト.
 	     * @example
 	     *   var parent = new Sprite3D();
 	     *   var child = new Sprite3D();
-	     *   //ポリゴンを別のポリゴンに子として追加
+	     *   //3Dオブジェクトを別の3Dオブジェクトに子として追加
 	     *   parent.addChild(child);
 	     * @see enchant.pro.Sprite3D#removeChild
 	     * @see enchant.pro.Sprite3D#childNodes
@@ -490,11 +490,11 @@ if(supportsEnchantPRO()) (function() {
             }
         },
 	    /**
-	     * 指定された子ポリゴンを削除する.
-	     * 削除が完了すると、子ポリゴンに対してremovedイベントが発生する.
+	     * 指定された子3Dオブジェクトを削除する.
+	     * 削除が完了すると、子3Dオブジェクトに対してremovedイベントが発生する.
 	     * シーンに追加されていた場合には, そのシーンからも削除され,
 	     * removedfromsceneイベントが発生する.
-	     * @param {enchant.pro.Sprite3D} sprite 削除する子ポリゴン.
+	     * @param {enchant.pro.Sprite3D} sprite 削除する子3Dオブジェクト.
 	     * @example
 	     *   var scene = new Scene3D();
 	     *   //sceneの一番目の子を削除
@@ -517,7 +517,7 @@ if(supportsEnchantPRO()) (function() {
             }
         },
         /**
-         * ポリゴンを平行移動する.
+         * 3Dオブジェクトを平行移動する.
          * 現在表示されている位置から, 各軸に対して指定された分だけ平行移動をする.
          * @param {Number} x x軸方向の平行移動量
          * @param {Number} y y軸方向の平行移動量
@@ -538,7 +538,7 @@ if(supportsEnchantPRO()) (function() {
             this._changedTranslation = true;
         },
         /**
-         * ポリゴンを拡大縮小する.
+         * 3Dオブジェクトを拡大縮小する.
          * 現在の拡大率から, 各軸に対して指定された倍率分だけ拡大縮小をする.
          * @param {Number} x x軸方向の拡大率
          * @param {Number} y y軸方向の拡大率
@@ -559,7 +559,7 @@ if(supportsEnchantPRO()) (function() {
             this._changedScale = true;
         },
         /**
-         * ポリゴンの回転行列.
+         * 3Dオブジェクトの回転行列.
          * 配列は長さ16の一次元配列であり, 行優先の4x4行列として解釈される.
          * @example
          *   var sprite = new Sprite3D();
@@ -583,7 +583,7 @@ if(supportsEnchantPRO()) (function() {
             }
         },
         /**
-         * ポリゴンに適用する変換行列.
+         * 3Dオブジェクトに適用する変換行列.
          * @deprecated
          * @type Number[]
          */
@@ -597,7 +597,7 @@ if(supportsEnchantPRO()) (function() {
             }
         },
         /**
-         * ポリゴンに貼付けられるテクスチャオブジェクト.
+         * 3Dオブジェクトに貼付けられるテクスチャオブジェクト.
          * テクスチャのマッピングは{@link enchant.pro.Sprite3D#texCoords}にて設定可能である.
          * @type enchant.pro.Surface3D
          * @example
@@ -617,7 +617,7 @@ if(supportsEnchantPRO()) (function() {
             }
         },
         /**
-         * ポリゴンの名前
+         * 3Dオブジェクトの名前
          * @type String
          */
         name: {
@@ -643,7 +643,7 @@ if(supportsEnchantPRO()) (function() {
     });
 
     /**
-     * ポリゴンのx座標.
+     * 3Dオブジェクトのx座標.
      * @default 0
      * @type Number
      * @see enchant.pro.Sprite3D#translate
@@ -651,7 +651,7 @@ if(supportsEnchantPRO()) (function() {
     enchant.pro.Sprite3D.prototype.x = 0;
     
     /**
-     * ポリゴンのy座標.
+     * 3Dオブジェクトのy座標.
      * @default 0
      * @type Number
      * @see enchant.pro.Sprite3D#translate
@@ -659,7 +659,7 @@ if(supportsEnchantPRO()) (function() {
     enchant.pro.Sprite3D.prototype.y = 0;
     
     /**
-     * ポリゴンのz座標.
+     * 3Dオブジェクトのz座標.
      * @default 0
      * @type Number
      * @see enchant.pro.Sprite3D#translate
@@ -679,7 +679,7 @@ if(supportsEnchantPRO()) (function() {
     });
 
     /**
-     * ポリゴンのx軸方向に対する拡大率
+     * 3Dオブジェクトのx軸方向に対する拡大率
      * @default 1.0
      * @type Number
      * @see enchant.pro.Sprite3D#scale
@@ -687,14 +687,14 @@ if(supportsEnchantPRO()) (function() {
     enchant.pro.Sprite3D.prototype.scaleX = 1;
 
     /**
-     * ポリゴンのy軸方向に対する拡大率
+     * 3Dオブジェクトのy軸方向に対する拡大率
      * @default 1.0
      * @type Number
      * @see enchant.pro.Sprite3D#scale
      */
     enchant.pro.Sprite3D.prototype.scaleY = 1;
     /**
-     * ポリゴンのz軸方向に対する拡大率
+     * 3Dオブジェクトのz軸方向に対する拡大率
      * @default 1.0
      * @type Number
      * @see enchant.pro.Sprite3D#scale
@@ -714,7 +714,7 @@ if(supportsEnchantPRO()) (function() {
     });
 
     /**
-     * ポリゴンのx軸に関する回転量
+     * 3Dオブジェクトのx軸に関する回転量
      * @default 1.0
      * @type Number
      * @see enchant.pro.Sprite3D#scale
@@ -722,14 +722,14 @@ if(supportsEnchantPRO()) (function() {
     enchant.pro.Sprite3D.prototype.rotationX = 0;
 
     /**
-     * ポリゴンのy軸に関する回転量
+     * 3Dオブジェクトのy軸に関する回転量
      * @default 1.0
      * @type Number
      * @see enchant.pro.Sprite3D#scale
      */
     enchant.pro.Sprite3D.prototype.rotationY = 0;
     /**
-     * ポリゴンのz軸に関する回転量
+     * 3Dオブジェクトのz軸に関する回転量
      * @default 1.0
      * @type Number
      * @see enchant.pro.Sprite3D#scale
@@ -748,7 +748,7 @@ if(supportsEnchantPRO()) (function() {
         });
     });
     /**
-     * ポリゴンの頂点配列.
+     * 3Dオブジェクトの頂点配列.
      * 3つの要素を一組として頂点を指定する. 全体の要素数は, 頂点の個数nに対して3nとなる.
      * 3n, 3n+1, 3n+2番目の要素はそれぞれ, n番目の頂点のx, y, z座標である.
      * @example
@@ -768,7 +768,7 @@ if(supportsEnchantPRO()) (function() {
      */
     enchant.pro.Sprite3D.prototype.vertices = enchant.pro.Sprite3D.prototype.vertices;
     /**
-     * ポリゴンの頂点インデックス配列.
+     * 3Dオブジェクトの頂点インデックス配列.
      * 3つの要素を一組として三角形を指定する.全体の要素数は, 三角形の個数nに対して3nとなる.
      * インデックスの値は、{@link enchant.pro.Sprite3D#vertices}で指定した頂点の番号である.
      * @example
@@ -799,7 +799,7 @@ if(supportsEnchantPRO()) (function() {
      */
     enchant.pro.Sprite3D.prototype.indices = enchant.pro.Sprite3D.prototype.indices;
     /**
-     * ポリゴンの頂点法線ベクトル配列.
+     * 3Dオブジェクトの頂点法線ベクトル配列.
      * 3つの要素を一組として法線ベクトルを指定する. 全体の要素数は, 法線ベクトルの個数nに対して3nとなる.
      * 3n, 3n+1, 3n+2番目の要素はそれぞれ, n番目の頂点の法線ベクトルのx, y, z成分である.
      * 法線ベクトルはライティングの影の計算に利用される.
@@ -830,7 +830,7 @@ if(supportsEnchantPRO()) (function() {
     enchant.pro.Sprite3D.prototype.normals = enchant.pro.Sprite3D.prototype.normals;
     
     /**
-     * ポリゴンのテクスチャマッピング配列.
+     * 3Dオブジェクトのテクスチャマッピング配列.
      * 2つの要素を一組としてuv座標を指定する. 全体の要素数は, 頂点の個数nに対して2nとなる.
      * 2n, 2n+1番目の要素はそれぞれ, n番目の頂点のテクスチャのu, v座標である.
      * それぞれの座標のとりうる値は0<=u,v<=1である.
@@ -870,7 +870,7 @@ if(supportsEnchantPRO()) (function() {
      */
     enchant.pro.Scene3D = enchant.Class.create(enchant.EventTarget, {
 	    /**
-	     * 表示ポリゴンツリーのルートになるクラス.
+	     * 表示3Dオブジェクトツリーのルートになるクラス.
 	     *
 	     * @example
 	     *   var scene = new Scene3D();
@@ -886,7 +886,7 @@ if(supportsEnchantPRO()) (function() {
             this._manager = EP_GL.getMeshManager();
             /**
              * 子要素の配列.
-             * このシーンに子として追加されているポリゴンの一覧を取得できる.
+             * このシーンに子として追加されている3Dオブジェクトの一覧を取得できる.
              * 子を追加したり削除したりする場合には、この配列を直接操作せずに,
              * {@link enchant.pro.Scene3D#addChild}や{@link enchant.pro.Scene3D#removeChild}を利用する.
              * @type enchant.pro.Sprite3D[]
@@ -945,11 +945,11 @@ if(supportsEnchantPRO()) (function() {
             });
         },
         /**
-         * シーンにポリゴンを追加する.
-         * 引数に渡されたポリゴンと、その子を全てシーンに追加する.
-         * シーンに追加されると自動的にポリゴンは画面上に表示される.
+         * シーンに3Dオブジェクトを追加する.
+         * 引数に渡された3Dオブジェクトと、その子を全てシーンに追加する.
+         * シーンに追加されると自動的に3Dオブジェクトは画面上に表示される.
          * 一度追加したオブジェクトを削除するには{@link enchant.pro.Scene3D#removeChild}を利用する.
-         * @param {enchant.pro.Sprite3D} sprite 追加するポリゴン
+         * @param {enchant.pro.Sprite3D} sprite 追加する3Dオブジェクト
          * @see enchant.pro.Scene3D#removeChild
          * @see enchant.pro.Scene3D#childNodes
          */
@@ -961,11 +961,11 @@ if(supportsEnchantPRO()) (function() {
             sprite.dispatchEvent(new enchant.Event('addedtoscene'));
         },
         /**
-         * シーンからポリゴンを削除する.
-         * シーンから指定されたポリゴンを削除する.
-         * 削除されたポリゴンは画面上に表示されなくなる.
-         * ポリゴンを追加するには{@link enchant.pro.Scene3D#addChild}を利用する.
-         * @param {enchant.pro.Sprite3D} sprite 削除するポリゴン
+         * シーンから3Dオブジェクトを削除する.
+         * シーンから指定された3Dオブジェクトを削除する.
+         * 削除された3Dオブジェクトは画面上に表示されなくなる.
+         * 3Dオブジェクトを追加するには{@link enchant.pro.Scene3D#addChild}を利用する.
+         * @param {enchant.pro.Sprite3D} sprite 削除する3Dオブジェクト
          * @see enchant.pro.Scene3D#addChild
          * @see enchant.pro.Scene3D#childNodes
          */
@@ -1020,7 +1020,7 @@ if(supportsEnchantPRO()) (function() {
      */
     enchant.pro.Surface3D = enchant.Class.create({
     	/**
-    	 * ポリゴンのテクスチャ情報を格納するクラス.
+    	 * 3Dオブジェクトのテクスチャ情報を格納するクラス.
     	 * @example
     	 *   var sprite = new Sprite3D();
     	 *   var surface = new Surface3D();
