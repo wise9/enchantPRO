@@ -1,0 +1,463 @@
+(function() {
+    enchant.pro = {};
+
+    enchant.pro.Sprite3D = enchant.Class.create(enchant.EventTarget, {
+        initialize: function() {
+            enchant.EventTarget.call(this);
+
+            this._mesh = EP_GL.getFactory().createMesh();
+            this._x = 0;
+            this._y = 0;
+            this._z = 0;
+            this.childNodes = [];
+            this.scene = null;
+
+            var listener = function(e) {
+                for (var i = 0, len = this.childNodes.length; i < len; i++) {
+                    var sprite = this.childNodes[i];
+                    sprite.dispatchEvent(e);
+                }
+            };
+            this.addEventListener('added', listener);
+            this.addEventListener('removed', listener);
+            this.addEventListener('addedtoscene', listener);
+            this.addEventListener('removedfromscene', listener);
+
+			var that = this;
+            var render = function() {
+                that.dispatchEvent(new enchant.Event('render'));
+            };
+            this.addEventListener('addedtoscene', function() {
+                render();
+                game.addEventListener('exitframe', render);
+            });
+            this.addEventListener('removedfromscene', function() {
+                game.removeEventListener('exitframe', render);
+            });
+
+            this.addEventListener('render', function() {
+                if (this._changedTranslation) {
+                    this._mesh.setTranslationJSON(JSON.stringify([this._x, this._y, this._z]));
+                    this._changedTranslation = false;
+                }
+                if (this._changedScale) {
+                    this._mesh.setScaleJSON(JSON.stringify([this._scaleX, this._scaleY, this._scaleZ]));
+                    this._changedScale = false;
+                }
+            });
+        },
+        addChild: function(sprite) {
+            this.childNodes.push(sprite);
+            this._mesh.addChild(sprite._mesh);
+            sprite.parentNode = this;
+            sprite.dispatchEvent(new enchant.Event('added'));
+            if (this.scene) {
+                sprite.scene = this.scene;
+                sprite.dispatchEvent(new enchant.Event('addedtoscene'));
+            }
+        },
+        removeChild: function(sprite) {
+            var i;
+            if ((i = this.childNodes.indexOf(sprite)) != -1) {
+                this.childNodes.splice(i, 1);
+            }
+            this._mesh.removeChild(sprite._mesh);
+            sprite.parentNode = null;
+            sprite.dispatchEvent(new enchant.Event('removed'));
+            if (this.scene) {
+                sprite.scene = null;
+                sprite.dispatchEvent(new enchant.Event('removedfromscene'));
+            }
+        },
+        translate: function(x, y, z) {
+            this._x += x;
+            this._y += y;
+            this._z += z;
+            this._changedTranslation = true;
+        },
+        scale: function(x, y, z) {
+            this._scaleX *= x;
+            this._scaleY *= y;
+            this._scaleZ *= z;
+            this._changedScale = true;
+        },
+        rotation: {
+            get: function() {
+                return this._rotation;
+            },
+            set: function(rotation) {
+                this._rotation = rotation;
+                this._mesh.setRotationJSON(JSON.stringify(matrix));
+            }
+        },
+        matrix: {
+            get: function() {
+                return this._matrix;
+            },
+            set: function(matrix) {
+                this._matrix = matrix;
+                this._mesh.setMatrixJSON(JSON.stringify(matrix));
+            }
+        },
+        surface: {
+            get: function() {
+                return this._surface;
+            },
+            set: function(surface) {
+                this._surface = surface;
+                this._mesh.setmaterial(this._surface._material);
+            }
+        },
+        name: {
+            get: function() {
+                return this._name;
+            },
+            set: function(surface) {
+                this._mesh.setName(this._name = name);
+            }
+        }
+    });
+    'x y z'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Sprite3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(n) {
+                this['_' + prop] = n;
+                this._changedTranslation = true;
+            }
+        });
+    });
+    'scaleX scaleY scaleZ'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Sprite3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(scale) {
+                this['_' + prop] = scale;
+                this._changedScale = true;
+            }
+        });
+    });
+    'vertices indices normals'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Sprite3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function(ary) {
+                this['_' + prop] = ary;
+                this._mesh['set' + capitalize(prop) + 'JSON'](JSON.stringify(this['_' + prop]));
+            }
+        });
+    });
+
+    enchant.pro.Scene3D = enchant.Class.create(enchant.EventTarget, {
+        initialize: function() {
+            enchant.EventTarget.call(this);
+
+            this._manager = EP_GL.getMeshManager();
+            this.childNodes = [];
+            var that = this;
+            enchant.Game.instance.addEventListener('enterframe', function(e) {
+                var nodes = that.childNodes.slice();
+                var push = Array.prototype.push;
+                while (nodes.length) {
+                    var node = nodes.pop();
+                    node.dispatchEvent(e);
+                    if (node.childNodes) {
+                        push.apply(nodes, node.childNodes);
+                    }
+                }
+            });
+        },
+        addChild: function(sprite) {
+            this._manager.add(sprite._mesh);
+            sprite.parentNode = sprite.scene = this;
+            sprite.dispatchEvent(new enchant.Event('added'));
+            sprite.dispatchEvent(new enchant.Event('addedtoscene'));
+        },
+        removeChild: function(sprite) {
+            var i;
+            if ((i = this.childNodes.indexOf(sprite)) != -1) {
+                this.childNodes.splice(i, 1);
+            }
+            this._mesh.remove(sprite._mesh);
+            sprite.parentNode = sprite.scene = null;
+            sprite.dispatchEvent(new enchant.Event('removed'));
+            sprite.dispatchEvent(new enchant.Event('removedfromscene'));
+        }
+    });
+
+    enchant.pro.Surface3D = enchant.Class.create({
+        initialize: function() {
+            this._material = EP_GL.getFactory().createMaterial();
+
+            /* TODO
+            this._ambient = [...];
+            ...
+            */
+        },
+        src: {
+            get: function() {
+                return this._src;
+            },
+            set: function(src) {
+                this._material.setTextureURL(this._src = src);
+            }
+        }
+    });
+    'ambient diffuse specular emission shininess'.split(' ').forEach(function(prop) {
+        Object.defineProperty(enchant.pro.Surface3D.prototype, prop, {
+            get: function() {
+                return this['_' + prop];
+            },
+            set: function() {
+                this['_' + prop] = Array.prototype.slice.call(arguments);
+                this._material['set' + capitalize(prop) + 'JSON'](JSON.stringify(this['_' + prop]));
+            }
+        });
+    });
+    
+    'Accelerometer Orientation MagneticField Gravity Gyroscope'.split(' ').forEach(function(className) {
+    	enchant.pro[className] = function(){
+    		if (enchant.pro[className].instance) {
+    			return enchant.pro[className].instance;
+    		}
+    		if(this instanceof enchant.pro[className]) {
+    			enchant.pro[className].instance = this;
+    		} else {
+    			return new enchant.pro[className];
+    		}
+    		
+    		enchant.EventTarget.call(this);
+    	};
+    	
+    	var sensorList = EP_SENSOR.getSensor(className).getSensorsList();
+    	var sensor;
+    	if(sensorList.size() > 0){
+    		sensor = sensorList.get(0);
+    	}
+    	enchant.pro[className].prototype = (function(prototype) {
+    		prototype.isAvailable = function(){
+    			return sensor;
+    		};
+    		prototype.start = function(){
+    			if(sensor){
+	    			sensor.enable();
+    			}
+    		};
+    		prototype.stop = function(){
+    			if(sensor){
+    				sensor.disable();
+    			}
+    		};
+    		return prototype;
+    	})(Object.create(enchant.EventTarget.prototype));
+    	
+    	if(sensor){
+    		sensor.setCallback("enchant.pro." + className + ".onUpdate");
+    	}
+    	
+    	enchant.pro[className].onUpdate = function(data){
+	        if (enchant.pro[className].instance) {
+	            var e = new Event('update');
+	            e.data = data;
+	            enchant.pro[className].instance.dispatchEvent(e);
+	        }
+    	};
+    });
+
+    enchant.pro.Camera = function() {
+        if (enchant.pro.Camera.instance) {
+            return enchant.pro.Camera.instance;
+        }
+
+        if (this instanceof enchant.pro.Camera) {
+            enchant.pro.Camera.instance = this;
+        } else {
+            return new enchant.pro.Camera();
+        }
+
+        enchant.EventTarget.call(this);
+    };
+
+    enchant.pro.Camera.prototype = (function(prototype) {
+        prototype.startPreview = function(callback) {
+        	if(typeof callback != 'function') {
+        		throw new Error('Argument must be function');
+        	}
+        	enchant.pro.Camera.onPreviewStartedCallback = callback;
+        	EP_CAMERA.startPreview();
+        };
+        prototype.stopPreview = function(callback) {
+        	if(typeof callback != 'function') {
+        		throw new Error('Argument must be function');
+        	}
+        	enchant.pro.Camera.onPreviewStoppedCallback = callback;
+        	EP_CAMERA.stopPreview();
+        };
+        prototype.takePicture = function(callback) {
+        	if(typeof callback != 'function') {
+        		throw new Error('Argument must be function');
+        	}
+        	enchant.pro.Camera.onPictureTakenCallback = callback;
+        	EP_CAMERA.takePicture();
+        };
+        prototype.autoFocus = function(){
+        	EP_CAMERA.autoFocus();
+        };
+        prototype.startQRCodeDetection = function(once) {
+            this.state = 'code';
+            EP_ZXING.setDetectOnce(!!once);
+            EP_ZXING.enableQRCodeDetection();
+            EP_ZXING.startDetection();
+        };
+        prototype.startBarcodeDetection = function(once) {
+            this.state = 'code';
+            EP_ZXING.setDetectOnce(!!once);
+            EP_ZXING.enableBarcodeDetection();
+            EP_ZXING.startDetection();
+        };
+        prototype.startARMarkerDetection = function() {
+            this.state = 'armarker';
+            EP_AR.startDetection();
+        };
+        prototype.stopDetection = function() {
+            switch (this.state) {
+                case 'code':
+                    EP_ZXING.stopDetection();
+                    break;
+                case 'armarker':
+                    EP_AR.stopDetection();
+                    break;
+            }
+        };
+        prototype.constructor = enchant.pro.Camera;
+
+        return prototype;
+    })(Object.create(enchant.EventTarget.prototype));
+
+
+    enchant.pro.Camera.onDetect = function(data) {
+        if (enchant.pro.Camera.instance) {
+            var e = new Event('detect');
+            e.data = data;
+            enchant.pro.Camera.instance.dispatchEvent(e);
+        }
+    };
+    EP_ZXING.setOnDetection('enchant.pro.Camera.onDetect');
+    EP_AR.setOnDetection('enchant.pro.Camera.onDetect');
+
+    enchant.pro.Camera.onPictureTaken = function(data) {
+        if (enchant.pro.Camera.instance) {
+            var surface = enchant.Surface.load(data);
+            surface.addEventListener('load', function() {
+                if (enchant.pro.Camera.onPictureTakenCallback != null) {
+                    enchant.pro.Camera.onPictureTakenCallback.call(null, surface);
+                }
+            });
+        }
+    };
+    EP_CAMERA.setOnPictureTakenCallback('enchant.pro.Camera.onPictureTaken');
+
+    enchant.pro.Camera.onPreviewStarted = function() {
+        if (enchant.pro.Camera.instance) {
+        }
+    };
+    EP_CAMERA.setOnPreviewStarted('enchant.pro.Camera.onPreviewStartedCallback');
+
+    enchant.pro.Camera.onPreviewStopped = function() {
+        if (enchant.pro.Camera.instance) {
+        }
+    };
+    EP_CAMERA.setOnPreviewStopped('enchant.pro.Camera.onPreviewStoppedCallback');
+
+    enchant.Event.DETECT = 'detect';
+
+    enchant.Surface.browse = function(callback) {
+        if (typeof callback != 'function') {
+            throw new Error('Argument must be function');
+        }
+        EP_MEDIA.pickImage();
+        enchant.Surface.onImagePickedCallback = callback;
+    };
+
+    enchant.Surface.onImagePicked = function(data) {
+        if (enchant.Surface.onImagePickedCallback) {
+            var surface = enchant.Surface.load(data);
+            surface.addEventListener('load', function() {
+                enchant.Surface.onImagePickedCallback.call(null, surface);
+            });
+        }
+    };
+    EP_MEDIA.setOnImagePicked('enchant.Surface.onImagePicked');
+
+    enchant.Sound.load = function(src) {
+        var sound = Object.create(enchant.Sound.prototype);
+        enchant.EventTarget.call(sound);
+        var id = 'enchant-audio' + enchant.Game.instance._soundID++;
+        var player = EP_SOUND.createSoundPlayer(src, id);//変更
+        sound.addEventListener('load', function() {
+            Object.defineProperties(sound, {
+                currentTime: {
+                    get: function() { return player.getCurrentTime() },
+                    set: function(time) { player.setCurrentTime(time) }
+                },
+                volume: {
+                    get: function() { return player.getVolume() },
+                    set: function(volume) { player.setVolume(volume) }
+                }
+            });
+            sound._element = player;
+            sound.duration = player.getDuration();
+        });
+        return sound;
+    };
+    
+    enchant.Sound.prototype.clone = function() {
+        var clone = Object.create(enchant.Sound.prototype, {
+        	_element: { value: this._element.clone() },
+        	duration: { value: this.duration }
+        });
+        enchant.EventTarget.call(clone);
+        return clone;
+    };
+
+    var touches = [null, null, null, null, null];
+    ['start', 'move', 'end'].forEach(function(type) {
+        window['androidTouch' + capitalize(type)] = function(touch) {
+        	if (touches[touch.identifier]) {
+                touch.target = touches[touch.identifier].target;    
+            } else {
+                touch.target = document.elementFromPoint(touch.pageX, touch.pageY);
+            }
+
+            if (type == 'end') {
+                touches[touch.identifier] = null;
+            } else {
+                touches[touch.identifier] = touch;
+            }
+
+            var e = document.createEvent('MouseEvent');
+            e.emulated = true;
+            
+            e.initMouseEvent('touch' + type, true, false, window, 0,
+                touch.pageX, touch.pageY, touch.pageX, touch.pageY, false, false, true, false, 0, null);
+            e.touches=touches.filter(function(i) { return i && i.target == this; }, touch.target);
+            e.changedTouches = [touch];
+            touch.target.dispatchEvent(e);
+        };
+    });
+
+    var listener = function(e) {
+        e.preventDefault();
+        if (!e.emulated) e.stopPropagation();
+    };
+    document.addEventListener('touchstart', listener, true);
+    document.addEventListener('touchmove', listener, true);
+    document.addEventListener('touchend', listener, true);
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+})();

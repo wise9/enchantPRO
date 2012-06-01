@@ -1,7 +1,7 @@
 enchant();
 window.onload = function() {
 	var game = new Game(320,320);
-	game.preload('robot.png');
+	game.preload('assets/robot.png');
 	game.onload = function(){
 		var label = new Label('not touched');
 		label.font = '32px sans-serif';
@@ -10,7 +10,7 @@ window.onload = function() {
 		game.rootScene.addChild(label);
 
 		var bear = new Sprite(128,128);
-		bear.image = game.assets['robot.png'];
+		bear.image = game.assets['assets/robot.png'];
 		bear.x=90;
 		bear.y=90;
 		var basex1;

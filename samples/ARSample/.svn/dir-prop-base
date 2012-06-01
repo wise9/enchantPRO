@@ -1,0 +1,6 @@
+K 13
+svn:externals
+V 51
+lib http://uesvn.pease.jp/svn/enchantpro/trunk/lib
+
+END
