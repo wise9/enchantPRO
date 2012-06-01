@@ -58,27 +58,15 @@
 				
 					<li><a href="../symbols/enchant.pro.Camera.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Camera</a></li>
 				
-					<li><a href="../symbols/enchant.pro.Camera3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Camera3D</a></li>
-				
 					<li><a href="../symbols/enchant.pro.Gravity.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Gravity</a></li>
 				
 					<li><a href="../symbols/enchant.pro.Gyroscope.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Gyroscope</a></li>
 				
-					<li><a href="../symbols/enchant.pro.Light3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Light3D</a></li>
-				
 					<li><a href="../symbols/enchant.pro.MagneticField.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>MagneticField</a></li>
-				
-					<li><a href="../symbols/enchant.pro.NFCReader.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>NFCReader</a></li>
 				
 					<li><a href="../symbols/enchant.pro.Orientation.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Orientation</a></li>
 				
-					<li><a href="../symbols/enchant.pro.Scene3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Scene3D</a></li>
-				
 					<li><a href="../symbols/enchant.pro.Sensor.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Sensor</a></li>
-				
-					<li><a href="../symbols/enchant.pro.Sprite3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Sprite3D</a></li>
-				
-					<li><a href="../symbols/enchant.pro.Surface3D.html">enchant<span class='break'> </span>.<span class='break'> </span>pro<span class='break'> </span>.<span class='break'> </span>Surface3D</a></li>
 				
 					<li><a href="../symbols/enchant.Scene.html">enchant<span class='break'> </span>.<span class='break'> </span>Scene</a></li>
 				
@@ -97,7 +85,7 @@
 			Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 			Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
 			Generated on:
-			<time datetime='2012-0-30' pubdate>2012-0-30 17:07</time>
+			<time datetime='2012-5-1' pubdate>2012-5-1 20:16</time>
 		</footer>
 	</div>
 </div>
@@ -200,9 +188,9 @@
 											>
 												<td class="attributes">&nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#startARMarkerDetection">startARMarkerDetection</a></b>()
+													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#getFieldOfViewX">getFieldOfViewX</a></b>()
 													</div>
-													<div class="description">ARマーカーの認識を開始する.</div>
+													<div class="description">左右方向のカメラの視野角を取得する(degree).</div>
 												</td>
 											</tr>
 										
@@ -211,9 +199,9 @@
 											>
 												<td class="attributes">&nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#startBarcodeDetection">startBarcodeDetection</a></b>(once)
+													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#getFieldOfViewY">getFieldOfViewY</a></b>()
 													</div>
-													<div class="description">バーコードの認識を開始する.</div>
+													<div class="description">上下方向のカメラの視野角を取得する(degree).</div>
 												</td>
 											</tr>
 										
@@ -222,9 +210,9 @@
 											>
 												<td class="attributes">&nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#startPreview">startPreview</a></b>(callback)
+													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#startARMarkerDetection">startARMarkerDetection</a></b>()
 													</div>
-													<div class="description">カメラプレビューを開始する.</div>
+													<div class="description">ARマーカーの認識を開始する.</div>
 												</td>
 											</tr>
 										
@@ -233,9 +221,9 @@
 											>
 												<td class="attributes">&nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#startQRCodeDetection">startQRCodeDetection</a></b>(once)
+													<div class="fixedFont"><b><a href="../symbols/enchant.pro.Camera.html#startPreview">startPreview</a></b>(callback)
 													</div>
-													<div class="description">QRコードの認識を開始する.</div>
+													<div class="description">カメラプレビューを開始する.</div>
 												</td>
 											</tr>
 										
@@ -318,7 +306,9 @@
 								<dl class="detailList">
 								<dt class="heading">Examples:</dt>
 								
-									<dd><pre class="code">  var scene = new Scene3D();  var camera = new Camera();  scene.setCamera(camera);</pre></dd>
+									<dd><pre class="code">  var scene = new Scene3D();
+  var camera = new Camera();
+  scene.setCamera(camera);</pre></dd>
 								
 								</dl>
 							
@@ -360,7 +350,8 @@
 										</div>
 										
 										<div class="description">
-											オートフォーカスを行う.カメラプレビューが開始されていないときにはなにもしない.
+											オートフォーカスを行う.
+カメラプレビューが開始されていないときにはなにもしない.
 											
 											
 											
@@ -378,18 +369,18 @@
 									<li 
 										 class='item1'
 									>
-										<div class="fixedFont heading" id="startARMarkerDetection">
+										<div class="fixedFont heading" id="getFieldOfViewX">
 											<span class='lighter'>
 											
 											</span>
 											
 											
 											
-											<b>startARMarkerDetection</b>()
+											<b>getFieldOfViewX</b>()
 										</div>
 										
 										<div class="description">
-											ARマーカーの認識を開始する.カメラプレビューが開始されていないときにはなにもしない.
+											左右方向のカメラの視野角を取得する(degree).
 											
 											
 											
@@ -407,35 +398,24 @@
 									<li 
 										 class='item2'
 									>
-										<div class="fixedFont heading" id="startBarcodeDetection">
+										<div class="fixedFont heading" id="getFieldOfViewY">
 											<span class='lighter'>
 											
 											</span>
 											
 											
 											
-											<b>startBarcodeDetection</b>(once)
+											<b>getFieldOfViewY</b>()
 										</div>
 										
 										<div class="description">
-											バーコードの認識を開始する.カメラプレビューが開始されていないときにはなにもしない.
+											上下方向のカメラの視野角を取得する(degree).
 											
 											
 											
 											
 										</div>
 										
-										
-											<dl class="detailList params">
-												<dt class="heading">Parameters:</dt>
-												
-													<dt>
-														<span class="light fixedFont">{Boolean}</span> <b>once</b>
-														
-													</dt>
-													<dd>一度だけ読んで終了する場合はtrue</dd>
-												
-											</dl>
 										
 										
 										
@@ -446,6 +426,36 @@
 								
 									<li 
 										 class='item3'
+									>
+										<div class="fixedFont heading" id="startARMarkerDetection">
+											<span class='lighter'>
+											
+											</span>
+											
+											
+											
+											<b>startARMarkerDetection</b>()
+										</div>
+										
+										<div class="description">
+											ARマーカーの認識を開始する.
+カメラプレビューが開始されていないときにはなにもしない.
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+										
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item4'
 									>
 										<div class="fixedFont heading" id="startPreview">
 											<span class='lighter'>
@@ -474,46 +484,6 @@
 														
 													</dt>
 													<dd>開始時のコールバック関数</dd>
-												
-											</dl>
-										
-										
-										
-										
-										
-										<div class="hr"></div>
-									</li>
-								
-									<li 
-										 class='item4'
-									>
-										<div class="fixedFont heading" id="startQRCodeDetection">
-											<span class='lighter'>
-											
-											</span>
-											
-											
-											
-											<b>startQRCodeDetection</b>(once)
-										</div>
-										
-										<div class="description">
-											QRコードの認識を開始する.カメラプレビューが開始されていないときにはなにもしない.
-											
-											
-											
-											
-										</div>
-										
-										
-											<dl class="detailList params">
-												<dt class="heading">Parameters:</dt>
-												
-													<dt>
-														<span class="light fixedFont">{Boolean}</span> <b>once</b>
-														
-													</dt>
-													<dd>一度だけ読んで終了する場合はtrue</dd>
 												
 											</dl>
 										
@@ -607,7 +577,8 @@
 										</div>
 										
 										<div class="description">
-											写真を撮影する.カメラプレビューが開始されていないときにはなにもしない.
+											写真を撮影する.
+カメラプレビューが開始されていないときにはなにもしない.
 											
 											
 											
