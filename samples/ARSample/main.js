@@ -11,6 +11,7 @@ window.onload = function(){
 		
 		//3Dシーンの初期化
 		var scene = new Scene3D();
+		scene.backgroundColor = [0.0, 0.0, 0.0, 0.0];
 		var box = new Cube();
 		box.x = 0;
 		box.y = 0;
@@ -40,8 +41,7 @@ window.onload = function(){
 
 		var camera3d = new Camera3D();
 		camera3d.x = camera3d.y = camera3d.z = 0;
-		mat4.perspective(camera.getFieldOfViewY() / 2,
-			game.width / game.height, 1.0, 1000.0, camera3d.projMat);
+		mat4.perspective(camera.getFieldOfViewY() / 2, game.width / game.height, 1.0, 1000.0, camera3d.projMat);
 		scene.setCamera(camera3d);
 		
 		//UI
@@ -54,7 +54,7 @@ window.onload = function(){
 				camera.startPreview(function(){
 					button.text = 'Stop AR';
 					camera.startARMarkerDetection();
-				}, 'low');
+				});
 			}else{
 				camera.stopDetection();
 				camera.stopPreview(function(){

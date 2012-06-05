@@ -1,5 +1,5 @@
 /**
- * pro.enchant.js v1.0.0
+ * pro.enchant.js v1.0.8
  *
  * Copyright (c) Ubiquitous Entertainment Inc.
  * Dual licensed under the MIT or GPL Version 3 licenses
@@ -35,10 +35,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-if(navigator.userAgent.indexOf('iPhone enchantPRO') != -1){
-	window['_supportsEnchantPRO'] = true;
-}
-
 function supportsEnchantPRO(){
 	return (typeof _supportsEnchantPRO != 'undefined') && _supportsEnchantPRO;
 }
@@ -260,28 +256,6 @@ if(supportsEnchantPRO()) (function() {
         	return EP_CAMERA.getFieldOfViewY();
         },
         /**
-         * QRコードの認識を開始する.
-         * カメラプレビューが開始されていないときにはなにもしない.
-         * @param {Boolean} once 一度だけ読んで終了する場合はtrue
-         */
-        startQRCodeDetection:function(once) {
-            this.state = 'code';
-            EP_ZXING.setDetectOnce(!!once);
-            EP_ZXING.enableQRCodeDetection();
-            EP_ZXING.startDetection();
-        },
-        /**
-         * バーコードの認識を開始する.
-         * カメラプレビューが開始されていないときにはなにもしない.
-         * @param {Boolean} once 一度だけ読んで終了する場合はtrue
-         */
-        startBarcodeDetection:function(once) {
-            this.state = 'code';
-            EP_ZXING.setDetectOnce(!!once);
-            EP_ZXING.enableBarcodeDetection();
-            EP_ZXING.startDetection();
-        },
-        /**
          * ARマーカーの認識を開始する.
          * カメラプレビューが開始されていないときにはなにもしない.
          */
@@ -294,9 +268,6 @@ if(supportsEnchantPRO()) (function() {
          */
         stopDetection:function() {
             switch (this.state) {
-                case 'code':
-                    EP_ZXING.stopDetection();
-                    break;
                 case 'armarker':
                     EP_AR.stopDetection();
                     break;
@@ -311,7 +282,6 @@ if(supportsEnchantPRO()) (function() {
             enchant.pro.Camera.instance.dispatchEvent(e);
         }
     };
-    //EP_ZXING.setOnDetection('enchant.pro.Camera.onDetect');
     EP_AR.setOnDetection('enchant.pro.Camera.onDetect');
 
     enchant.pro.Camera.onPictureTaken = function(data) {
@@ -338,6 +308,46 @@ if(supportsEnchantPRO()) (function() {
     };
     EP_CAMERA.setOnPreviewStopped('enchant.pro.Camera.onPreviewStoppedCallback');
 
+    enchant.pro.NFCReader = enchant.Class.create(enchant.EventTarget, {
+    	/**
+    	 * NFCクラス
+    	 * @example
+	     * @constructs
+	     * @extends enchant.EventTarget
+    	 */
+    	initialize:function(){
+    		if(enchant.pro.NFCReader.instance){
+    			return enchant.pro.NFCReader.instance;
+    		}
+    		enchant.EventTarget.call(this);
+    		enchant.pro.NFCReader.instance = this;
+    	},
+        /**
+         * NFCタグの読み取りを開始する
+         * タグを読み取ると、NFCReaderにdetectイベントがディスパッチされる
+         * EventオブジェクトのnfcIDプロパティに読み取られたタグのIDが入ってる
+         */
+        startDetection:function(){
+    		EP_NFC.startDetection();
+    	},
+    	/**
+    	 * NFCタグの読み取りを停止する
+    	 */
+    	stopDetection:function(){
+    		EP_NFC.stopDetection();
+    	}
+    });
+    
+    enchant.pro.NFCReader.onDetect = function(data) {
+        if (enchant.pro.NFCReader.instance) {
+            var e = new Event('detect');
+            e.nfcId = data;
+            enchant.pro.NFCReader.instance.dispatchEvent(e);
+        }
+    };    
+    
+    EP_NFC.setOnDetect('enchant.pro.NFCReader.onDetect');
+    
     enchant.Event.DETECT = 'detect';
 
 	/**
